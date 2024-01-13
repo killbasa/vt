@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -eou pipefail
-
 base_url="https://github.com/killbasa/vt/releases/latest/download/"
 target_path="./vt"
 
