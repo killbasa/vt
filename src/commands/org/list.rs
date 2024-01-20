@@ -12,20 +12,20 @@ impl Cli {
     pub fn exec(&self) -> Result<()> {
         let config = app::config().clone();
 
-        if config.channels.is_none() || config.channels.as_ref().unwrap().is_empty() {
-            println!("No channels set");
+        if config.orgs.is_none() || config.orgs.as_ref().unwrap().is_empty() {
+            println!("No orgs set");
             return Ok(());
         }
 
         let mut list = Vec::<String>::new();
 
-        if let Some(channels) = config.channels {
-            for (k, v) in channels.iter() {
+        if let Some(orgs) = config.orgs {
+            for (k, v) in orgs.iter() {
                 list.push(format!("{} -> {}", k, v));
             }
         }
 
-        println!("Channels:\n{}", list.join("\n"));
+        println!("Organizations:\n{}", list.join("\n"));
 
         Ok(())
     }

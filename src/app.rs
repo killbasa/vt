@@ -12,9 +12,17 @@ pub fn set_global_config(config: Config) {
     CONFIG.set(config).expect("could not set config")
 }
 
-pub fn get_alias(channel: &str) -> Option<String> {
-    if let Some(aliases) = config().clone().aliases {
-        return aliases.get(channel).cloned();
+pub fn get_channel(channel: &str) -> Option<String> {
+    if let Some(channels) = config().clone().channels {
+        return channels.get(channel).cloned();
+    }
+
+    None
+}
+
+pub fn get_org(org: &str) -> Option<String> {
+    if let Some(orgs) = config().clone().orgs {
+        return orgs.get(org).cloned();
     }
 
     None

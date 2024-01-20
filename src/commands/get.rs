@@ -7,7 +7,7 @@ use reqwest::blocking::ClientBuilder;
 use roxmltree::Node;
 use serde::Serialize;
 
-use crate::{app::get_alias, internal::display};
+use crate::{app, internal::display};
 
 #[derive(Serialize)]
 struct Video {
@@ -29,13 +29,13 @@ pub struct Cli {
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let alias = get_alias(&self.channel);
+        let alias = app::get_channel(&self.channel);
         if alias.is_none() {
             println!("Channel alias not found. Use `vt channel add` to add a channel alias.");
             return Ok(());
         }
 
-        let limit = self.limit.unwrap_or(15).min(15);
+        let limit = self.limit.unwrap_or(5).min(15);
         let body = fetch_feed(alias.unwrap())?;
 
         let mut video_data = Vec::<Video>::new();

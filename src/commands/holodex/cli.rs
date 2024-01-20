@@ -11,15 +11,15 @@ pub struct Cli {
 
 #[derive(Subcommand, Debug)]
 enum Commands {
-    Apikey(super::apikey::Cli),
-    Find(super::find::Cli),
+    Get(super::get::Cli),
+    Org(super::org::Cli),
 }
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
         match &self.command {
-            Commands::Apikey(cli) => cli.exec(),
-            Commands::Find(cli) => cli.exec(),
+            Commands::Get(cli) => cli.exec(),
+            Commands::Org(cli) => cli.exec(),
         }
     }
 }
