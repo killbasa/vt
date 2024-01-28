@@ -8,7 +8,7 @@ use clap::{Parser, Subcommand};
 
 #[derive(Parser)]
 #[command(author, version)]
-#[command(about = "Check live and upcoming YouTube streams")]
+#[command(about = "Check live and upcoming YouTube streams from your terminal")]
 pub struct Cli {
     #[clap(subcommand)]
     command: Commands,

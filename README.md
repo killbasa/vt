@@ -1,5 +1,7 @@
 # VT
 
+Check live and upcoming YouTube streams from your terminal.
+
 ## Installation
 
 ### From script
