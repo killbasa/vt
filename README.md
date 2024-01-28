@@ -28,14 +28,16 @@ cargo install --locked --path vt
 ## Example
 
 ```sh
+# Set your YouTube API key from https://console.cloud.google.com
 vt config set apikey
 
+# Set a channel alias to use for checking streams
 vt channel set iori UCN5bD1YYapThOeadG7YkBOA # or aliased: vt ch set iori UCN5bD1YYapThOeadG7YkBOA
-# Channel alias added: iori -> UCN5bD1YYapThOeadG7YkBOA
 
+# Check all your set aliases
 vt channel ls
-# iori -> UCN5bD1YYapThOeadG7YkBOA
 
+# Get live and upcoming streams
 vt get iori
 # [live] 【MINECRAFT】地下大冒険開始！無事生き延びれるのかっ！？going underground again:)【白鹿いおり Phase Connect】
 #  ├─     url: https://www.youtube.com/watch?v=Z0qmy9eZ5kE
