@@ -8,7 +8,7 @@ if [ "$os" = "Linux" ]; then
 	url="${base_url}vt-x86_64-unknown-linux-gnu.tar.gz"
 	curl -L -sSf "$url" | tar -xz
 else
-	echo "Your platform ($os) is not supported."
+	echo "The install script is not supported on your platform ($os). Please install manually."
 	exit 1
 fi
 
