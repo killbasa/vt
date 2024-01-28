@@ -1,4 +1,4 @@
-mod add;
 pub mod cli;
-mod list;
+mod ls;
 mod rm;
+mod set;

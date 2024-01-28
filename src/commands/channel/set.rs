@@ -3,7 +3,7 @@ use clap::Args;
 
 use crate::{app, config};
 
-/// Add a channel alias
+/// Set a channel alias
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
@@ -21,7 +21,7 @@ impl Cli {
 
         if let Some(mut channels) = config.channels.clone() {
             if channels.contains_key(&self.alias) {
-                println!("Channe alias already exists");
+                println!("Channel alias already exists");
                 return Ok(());
             }
 

@@ -3,7 +3,7 @@ use clap::Args;
 
 use crate::app;
 
-/// List channel channels
+/// List channel aliases
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {}
@@ -12,20 +12,20 @@ impl Cli {
     pub fn exec(&self) -> Result<()> {
         let config = app::config().clone();
 
-        if config.orgs.is_none() || config.orgs.as_ref().unwrap().is_empty() {
-            println!("No orgs set");
+        if config.channels.is_none() || config.channels.as_ref().unwrap().is_empty() {
+            println!("No channels set");
             return Ok(());
         }
 
         let mut list = Vec::<String>::new();
 
-        if let Some(orgs) = config.orgs {
-            for (k, v) in orgs.iter() {
+        if let Some(channels) = config.channels {
+            for (k, v) in channels.iter() {
                 list.push(format!("{} -> {}", k, v));
             }
         }
 
-        println!("Organizations:\n{}", list.join("\n"));
+        println!("{}", list.join("\n"));
 
         Ok(())
     }

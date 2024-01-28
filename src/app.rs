@@ -19,11 +19,3 @@ pub fn get_channel(channel: &str) -> Option<String> {
 
     None
 }
-
-pub fn get_org(org: &str) -> Option<String> {
-    if let Some(orgs) = config().clone().orgs {
-        return orgs.get(org).cloned();
-    }
-
-    None
-}

@@ -1,9 +1,7 @@
 use anyhow::Result;
 use std::process::{Child, Command, Stdio};
 
-use super::programs;
-
-fn _echo(content: String) -> Child {
+fn _echo(content: &str) -> Child {
     Command::new("echo")
         .arg(content)
         .stdout(Stdio::piped())
@@ -12,7 +10,7 @@ fn _echo(content: String) -> Child {
 }
 
 #[allow(dead_code)]
-pub fn with_less(content: String) -> Result<()> {
+pub fn with_less(content: &str) -> Result<()> {
     let echo = _echo(content);
 
     Command::new("less")
@@ -27,7 +25,7 @@ pub fn with_less(content: String) -> Result<()> {
 }
 
 #[allow(dead_code)]
-pub fn with_more(content: String) -> Result<()> {
+pub fn with_more(content: &str) -> Result<()> {
     let echo = _echo(content);
 
     Command::new("more")
@@ -40,19 +38,6 @@ pub fn with_more(content: String) -> Result<()> {
     Ok(())
 }
 
-pub fn with_print(content: String) {
+pub fn with_print(content: &str) {
     println!("{}", content);
-}
-
-#[allow(dead_code)]
-pub fn with_any(content: String) -> Result<()> {
-    if programs::is_program_in_path("less") {
-        with_less(content)?;
-    } else if programs::is_program_in_path("more") {
-        with_more(content)?;
-    } else {
-        with_print(content);
-    }
-
-    Ok(())
 }

@@ -8,19 +8,15 @@ const FILE_STEM: &str = "vt.config";
 
 #[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Config {
-    pub holodex_key: Option<String>,
-    pub yt_key: Option<String>,
+    pub apikey: Option<String>,
     pub channels: Option<HashMap<String, String>>,
-    pub orgs: Option<HashMap<String, String>>,
 }
 
 impl Default for Config {
     fn default() -> Self {
         Self {
-            holodex_key: None,
-            yt_key: None,
+            apikey: None,
             channels: None,
-            orgs: None,
         }
     }
 }

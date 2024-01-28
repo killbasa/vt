@@ -3,7 +3,7 @@ use clap::Args;
 
 use crate::{app, config};
 
-/// Check the config path
+/// Set a YouTube API key
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {}
@@ -12,12 +12,12 @@ impl Cli {
     pub fn exec(&self) -> Result<()> {
         let mut config = app::config().clone();
 
-        let password = rpassword::prompt_password("Your password: ")?;
+        let apikey = rpassword::prompt_password("Your YouTube API key: ")?;
 
-        config.holodex_key = Some(password);
+        config.apikey = Some(apikey);
         config::save(config)?;
 
-        println!("Holodex API key saved");
+        println!("YouTube API key saved");
 
         Ok(())
     }
