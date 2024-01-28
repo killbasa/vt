@@ -12,6 +12,10 @@ The install script can be found [here](/install.sh).
 curl -L -sSf https://raw.githubusercontent.com/killbasa/vt/main/install.sh | sh
 ```
 
+### Manually
+
+Precompiled binaries can be found in the [releases](https://github.com/killbasa/vt/releases) page.
+
 ### From source
 
 Since the program needs to be compiled, [Rust](https://www.rust-lang.org/) is a requirement.
