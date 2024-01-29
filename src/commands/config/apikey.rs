@@ -10,12 +10,12 @@ pub struct Cli {}
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let mut config = app::config().clone();
+        let mut secrets = app::secrets().clone();
 
         let apikey = rpassword::prompt_password("Your YouTube API key: ")?;
 
-        config.apikey = Some(apikey);
-        config::save(config)?;
+        secrets.apikey = Some(apikey);
+        config::save_secrets(secrets)?;
 
         println!("YouTube API key saved");
 

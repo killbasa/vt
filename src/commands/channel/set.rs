@@ -1,9 +1,10 @@
 use anyhow::Result;
 use clap::Args;
+use std::collections::HashMap;
 
 use crate::{app, config};
 
-/// Set a channel alias
+/// Set a channel
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
@@ -16,12 +17,12 @@ impl Cli {
         let mut config = app::config().clone();
 
         if config.channels.is_none() {
-            config.channels = Some(std::collections::HashMap::new());
+            config.channels = Some(HashMap::new());
         }
 
         if let Some(mut channels) = config.channels.clone() {
             if channels.contains_key(&self.alias) {
-                println!("Channel alias already exists");
+                println!("Channel already exists");
                 return Ok(());
             }
 
@@ -29,13 +30,9 @@ impl Cli {
             config.channels = Some(channels);
         }
 
-        config::save(config)?;
+        config::save_config(config)?;
 
-        println!(
-            "Channel alias added: {} -> {}",
-            self.alias.clone(),
-            self.channel_id.clone()
-        );
+        println!("Channel added: {} -> {}", &self.alias, &self.channel_id);
 
         Ok(())
     }

@@ -3,11 +3,12 @@ use clap::Args;
 
 use crate::{app, config};
 
-/// Remove a channel
+/// Change a channel
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
     alias: String,
+    new_alias: String,
 }
 
 impl Cli {
@@ -16,7 +17,8 @@ impl Cli {
 
         match config.channels {
             Some(mut channels) => {
-                if channels.contains_key(&self.alias) {
+                if let Some(channel) = channels.get(&self.alias) {
+                    channels.insert(self.new_alias.clone(), channel.clone());
                     channels.remove(&self.alias);
                     config.channels = Some(channels);
                 } else {
@@ -32,7 +34,7 @@ impl Cli {
 
         config::save_config(config)?;
 
-        println!("Channel removed: {}", &self.alias);
+        println!("Channel moved: {} -> {}", &self.alias, &self.new_alias);
 
         Ok(())
     }

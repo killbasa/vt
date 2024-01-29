@@ -10,21 +10,22 @@ pub struct Cli {
 }
 
 #[derive(Subcommand, Debug)]
-#[command(alias = "ch")]
 enum Commands {
+    Create(super::create::Cli),
+    Delete(super::delete::Cli),
+    Get(super::get::Cli),
     Set(super::set::Cli),
-    Ls(super::ls::Cli),
-    Mv(super::mv::Cli),
     Rm(super::rm::Cli),
 }
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
         match &self.command {
-            Commands::Set(cli) => cli.exec(),
-            Commands::Ls(cli) => cli.exec(),
-            Commands::Mv(cli) => cli.exec(),
+            Commands::Create(cli) => cli.exec(),
+            Commands::Delete(cli) => cli.exec(),
+            Commands::Get(cli) => cli.exec(),
             Commands::Rm(cli) => cli.exec(),
+            Commands::Set(cli) => cli.exec(),
         }
     }
 }

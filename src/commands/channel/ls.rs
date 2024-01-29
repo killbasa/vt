@@ -3,7 +3,7 @@ use clap::Args;
 
 use crate::app;
 
-/// List channel aliases
+/// List channels
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {}

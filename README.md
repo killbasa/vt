@@ -31,7 +31,7 @@ cargo install --locked --path vt
 # Set your YouTube API key from https://console.cloud.google.com
 vt config set apikey
 
-# Set a channel alias to use for checking streams
+# Set a channel to use for checking streams
 vt channel set iori UCN5bD1YYapThOeadG7YkBOA # or aliased: vt ch set iori UCN5bD1YYapThOeadG7YkBOA
 
 # Check all your set aliases
@@ -52,3 +52,7 @@ vt get iori
 #  └─ scheduled: in a week
 
 ```
+
+## YouTube quota usage
+
+The CLI uses the [list](https://developers.google.com/youtube/v3/docs/videos/list) endpoint which costs 1 out of 10,000 quota.
