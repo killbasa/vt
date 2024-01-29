@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use anyhow::Result;
 use clap::Args;
 
@@ -5,7 +7,7 @@ use crate::{app, config};
 
 /// Remove a channel
 #[derive(Args, Debug)]
-#[command()]
+#[command(alias = "rm")]
 pub struct Cli {
     alias: String,
 }
@@ -30,6 +32,15 @@ impl Cli {
             }
         }
 
+        let mut lists = match config.lists {
+            Some(lists) => lists,
+            None => HashMap::new(),
+        };
+        for (_, list) in lists.iter_mut() {
+            list.remove(&self.alias);
+        }
+
+        config.lists = Some(lists);
         config::save_config(config)?;
 
         println!("Channel removed: {}", &self.alias);

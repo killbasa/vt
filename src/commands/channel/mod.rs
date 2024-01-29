@@ -1,5 +1,5 @@
+mod _move;
+mod add;
 pub mod cli;
-mod ls;
-mod mv;
-mod rm;
-mod set;
+mod list;
+mod remove;

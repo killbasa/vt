@@ -1,6 +1,12 @@
-# VT
+<div align="center">
+
+# vt
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Check live and upcoming YouTube streams from your terminal.
+
+</div>
 
 ## Installation
 
@@ -25,17 +31,27 @@ git clone https://github.com/killbasa/vt.git
 cargo install --locked --path vt
 ```
 
-## Example
+## YouTube quota usage
+
+The CLI uses the [list](https://developers.google.com/youtube/v3/docs/videos/list) endpoint which costs 1 out of 10,000 quota.
+
+## Usage
+
+### Setting your YouTube API key
 
 ```sh
 # Set your YouTube API key from https://console.cloud.google.com
 vt config set apikey
+```
 
-# Set a channel to use for checking streams
-vt channel set iori UCN5bD1YYapThOeadG7YkBOA # or aliased: vt ch set iori UCN5bD1YYapThOeadG7YkBOA
+### Checking individual channels
+
+```sh
+# Add a channel for checking streams
+vt channel add iori UCN5bD1YYapThOeadG7YkBOA # or aliased: vt ch set iori UCN5bD1YYapThOeadG7YkBOA
 
 # Check all your set aliases
-vt channel ls
+vt channel list
 
 # Get live and upcoming streams
 vt get iori
@@ -53,6 +69,35 @@ vt get iori
 
 ```
 
-## YouTube quota usage
+### Checking a list of channels
 
-The CLI uses the [list](https://developers.google.com/youtube/v3/docs/videos/list) endpoint which costs 1 out of 10,000 quota.
+```sh
+# Create a list
+vt list create phase
+
+# Add a channels to the list
+vt list add iori
+vt list add nasa
+
+# Check the channels in a list
+vt list get phase
+# [upcoming] 【コラボ対談】貴方はどうして天体が好き？【phase connect】
+#  ├─   channel: Nasa Ch. 転寝ナサ 【Phase Connect】
+#  ├─       url: https://www.youtube.com/watch?v=-e1OUTo4JVA
+#  └─ scheduled: in 14 hours
+#
+# [upcoming] 【Duolingo】Learning Spanish for my First Time! on Twitch/スペイン語を勉強するよ【白鹿いおり Phase Connect】
+#  ├─   channel: Iori Ch. 白鹿いおり【Phase Connect】
+#  ├─       url: https://www.youtube.com/watch?v=PlYtKct94HI
+#  └─ scheduled: in 3 days
+#
+# [upcoming] 【AmongUs】ワールドワイドな選手たち！【phase connect】
+#  ├─   channel: Nasa Ch. 転寝ナサ 【Phase Connect】
+#  ├─       url: https://www.youtube.com/watch?v=zFPMQoQOmhY
+#  └─ scheduled: in 3 days
+#
+# [upcoming] 【Keep Talking and Nobody Explodes】天才二人にかかれば爆弾処理くらいおゆーwwwwな件について。w/@PinaPengin 【白鹿いおり Phase Connect】
+#  ├─   channel: Iori Ch. 白鹿いおり【Phase Connect】
+#  ├─       url: https://www.youtube.com/watch?v=QbOjOyn4a0M
+#  └─ scheduled: in 4 days
+```

@@ -5,7 +5,7 @@ use crate::app;
 
 /// List channels
 #[derive(Args, Debug)]
-#[command()]
+#[command(alias = "ls")]
 pub struct Cli {}
 
 impl Cli {

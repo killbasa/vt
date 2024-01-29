@@ -40,7 +40,7 @@ impl Cli {
                 config.lists = Some(lists);
                 config::save_config(config)?;
 
-                println!("Channel added to list");
+                println!("added {} to {}", &self.alias, &self.list);
             }
             false => println!("Channel already exists in list"),
         };

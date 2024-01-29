@@ -6,7 +6,7 @@ use crate::{app, config};
 
 /// Set a channel
 #[derive(Args, Debug)]
-#[command()]
+#[command(alias = "rm")]
 pub struct Cli {
     list: String,
     alias: String,
@@ -27,22 +27,15 @@ impl Cli {
             }
         };
 
-        let alias = match app::get_channel(&self.alias) {
-            Some(_) => &self.alias,
-            None => {
-                return Err(anyhow!("channel not found"));
-            }
-        };
-
-        match list.remove(alias) {
+        match list.remove(&self.alias) {
             true => {
                 lists.insert(self.list.clone(), list);
                 config.lists = Some(lists);
                 config::save_config(config)?;
 
-                println!("Channel removed from list");
+                println!("removed {} from {}", &self.alias, &self.list);
             }
-            false => println!("Channel was not in that list"),
+            false => println!("{} was not in that list", &self.alias),
         };
 
         Ok(())

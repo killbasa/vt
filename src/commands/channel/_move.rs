@@ -5,7 +5,7 @@ use crate::{app, config};
 
 /// Change a channel
 #[derive(Args, Debug)]
-#[command()]
+#[command(alias = "mv")]
 pub struct Cli {
     alias: String,
     new_alias: String,
