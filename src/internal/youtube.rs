@@ -28,7 +28,7 @@ struct LiveStreamingDetails {
 struct RawVideo {
     id: String,
     snippet: Snippet,
-    live_streaming_details: LiveStreamingDetails,
+    live_streaming_details: Option<LiveStreamingDetails>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -115,19 +115,21 @@ pub fn get_videos_api(video_ids: &Vec<String>) -> Result<Vec<Video>> {
         let body: ApiResponse = response.json()?;
 
         for raw_video in body.items {
-            let end_time = raw_video.live_streaming_details.actual_end_time;
+            if let Some(live) = raw_video.live_streaming_details {
+                let end_time = live.actual_end_time;
 
-            if end_time.is_none() {
-                let start_time = raw_video.live_streaming_details.actual_start_time;
-                let scheduled_time = raw_video.live_streaming_details.scheduled_start_time;
+                if end_time.is_none() {
+                    let start_time = live.actual_start_time;
+                    let scheduled_time = live.scheduled_start_time;
 
-                videos.push(Video {
-                    id: raw_video.id,
-                    channel: raw_video.snippet.channel_title,
-                    title: raw_video.snippet.title,
-                    start_time,
-                    scheduled_time,
-                });
+                    videos.push(Video {
+                        id: raw_video.id,
+                        channel: raw_video.snippet.channel_title,
+                        title: raw_video.snippet.title,
+                        start_time,
+                        scheduled_time,
+                    });
+                }
             }
         }
     }
