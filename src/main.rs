@@ -20,7 +20,7 @@ enum Commands {
     Complete(commands::complete::Cli),
     Config(commands::config::cli::Cli),
     Get(commands::get::Cli),
-    List(commands::list::cli::Cli),
+    Lists(commands::lists::cli::Cli),
 }
 
 fn main() -> Result<()> {
@@ -34,6 +34,6 @@ fn main() -> Result<()> {
         Commands::Complete(cli) => cli.exec(),
         Commands::Config(cli) => cli.exec(),
         Commands::Get(cli) => cli.exec(),
-        Commands::List(cli) => cli.exec(),
+        Commands::Lists(cli) => cli.exec(),
     }
 }

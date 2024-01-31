@@ -73,14 +73,14 @@ vt get iori
 
 ```sh
 # Create a list
-vt list create phase
+vt lists create phase
 
 # Add a channels to the list
-vt list add iori
-vt list add nasa
+vt lists add iori
+vt lists add nasa
 
 # Check the channels in a list
-vt list get phase
+vt lists get phase
 # [upcoming] 【コラボ対談】貴方はどうして天体が好き？【phase connect】
 #  ├─   channel: Nasa Ch. 転寝ナサ 【Phase Connect】
 #  ├─       url: https://www.youtube.com/watch?v=-e1OUTo4JVA
