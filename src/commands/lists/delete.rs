@@ -3,7 +3,7 @@ use clap::Args;
 
 use crate::{app, config};
 
-/// Set a channel
+/// Delete a list
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {

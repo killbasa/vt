@@ -4,7 +4,7 @@ use std::collections::HashMap;
 
 use crate::{app, config};
 
-/// Set a channel
+/// Add a channel to a list
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {

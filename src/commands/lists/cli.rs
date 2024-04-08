@@ -15,6 +15,7 @@ enum Commands {
     Create(super::create::Cli),
     Delete(super::delete::Cli),
     Get(super::get::Cli),
+    List(super::list::Cli),
     Remove(super::remove::Cli),
 }
 
@@ -25,6 +26,7 @@ impl Cli {
             Commands::Create(cli) => cli.exec(),
             Commands::Delete(cli) => cli.exec(),
             Commands::Get(cli) => cli.exec(),
+            Commands::List(cli) => cli.exec(),
             Commands::Remove(cli) => cli.exec(),
         }
     }
