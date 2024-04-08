@@ -20,7 +20,7 @@ struct Snippet {
 struct LiveStreamingDetails {
     actual_start_time: Option<String>,
     actual_end_time: Option<String>,
-    scheduled_start_time: String,
+    scheduled_start_time: Option<String>,
 }
 
 #[derive(Deserialize, Debug)]
@@ -117,17 +117,17 @@ pub fn get_videos_api(video_ids: &Vec<String>) -> Result<Vec<Video>> {
         for raw_video in body.items {
             if let Some(live) = raw_video.live_streaming_details {
                 let end_time = live.actual_end_time;
+                let scheduled_time = live.scheduled_start_time;
 
-                if end_time.is_none() {
+                if scheduled_time.is_some() && end_time.is_none() {
                     let start_time = live.actual_start_time;
-                    let scheduled_time = live.scheduled_start_time;
 
                     videos.push(Video {
                         id: raw_video.id,
                         channel: raw_video.snippet.channel_title,
                         title: raw_video.snippet.title,
                         start_time,
-                        scheduled_time,
+                        scheduled_time: scheduled_time.unwrap(),
                     });
                 }
             }

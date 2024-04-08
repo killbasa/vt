@@ -21,7 +21,7 @@ impl Cli {
 
         let video_ids = match alias {
             Some(alias) => youtube::get_video_ids_xml(&alias)
-                .map_err(|e| anyhow!("failed to fetch video IDs: {}", e))?,
+                .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &alias, e))?,
             None => {
                 return Err(anyhow!("channel not found"));
             }

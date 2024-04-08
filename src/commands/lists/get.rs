@@ -2,7 +2,7 @@ use anyhow::{anyhow, Result};
 use clap::Args;
 
 use crate::{
-    app::{self, config},
+    app,
     internal::{display, utils, youtube},
 };
 
@@ -17,7 +17,7 @@ pub struct Cli {
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let channels = match config().clone().channels {
+        let channels = match app::config().clone().channels {
             Some(c) => c,
             None => {
                 return Err(anyhow!("no channels found"));
@@ -42,7 +42,7 @@ impl Cli {
             };
 
             let ids = youtube::get_video_ids_xml(&alias)
-                .map_err(|e| anyhow!("failed to fetch videos: {}", e))?;
+                .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &alias, e))?;
 
             for id in ids {
                 video_ids.push(id);
