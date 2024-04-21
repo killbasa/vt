@@ -1,4 +1,4 @@
-use chrono::DateTime;
+use chrono::{DateTime, Local};
 use chrono_humanize::HumanTime;
 use colored::{ColoredString, Colorize};
 
@@ -30,11 +30,19 @@ pub fn format_videos(videos: Vec<Video>, include_channel: bool) -> String {
         };
 
         if let Some(start_time) = video.start_time {
-            let started = humanize_time(&start_time);
-            entry.push_str(&format!(" └─   started: {}\n", started.bright_green()));
+            let (date, diff) = humanize_time(&start_time);
+
+            entry.push_str(&format!(
+                " └─   started: {}\n",
+                format!("{} ({})", date, diff).bright_green()
+            ));
         } else {
-            let scheduled = humanize_time(&video.scheduled_time);
-            entry.push_str(&format!(" └─ scheduled: {}\n", scheduled.bright_green()));
+            let (date, diff) = humanize_time(&video.scheduled_time);
+
+            entry.push_str(&format!(
+                " └─ scheduled: {}\n",
+                format!("{} ({})", date, diff).bright_green()
+            ));
         }
 
         video_list.push(entry);
@@ -43,7 +51,15 @@ pub fn format_videos(videos: Vec<Video>, include_channel: bool) -> String {
     video_list.join("\n")
 }
 
-pub fn humanize_time(time: &str) -> String {
+pub fn humanize_time(time: &str) -> (String, String) {
     let parsed = DateTime::parse_from_rfc3339(time).unwrap();
-    HumanTime::from(parsed).to_string()
+    let humanized = HumanTime::from(parsed);
+
+    (
+        parsed
+            .with_timezone(&Local::now().timezone())
+            .format("%Y-%m-%d %H:%M")
+            .to_string(),
+        humanized.to_string(),
+    )
 }
