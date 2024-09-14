@@ -1253,6 +1253,7 @@ dependencies = [
  "confy",
  "const_format",
  "once_cell",
+ "openssl-sys",
  "reqwest",
  "roxmltree",
  "rpassword",
