@@ -4,7 +4,7 @@ edition    = "2021"
 license    = "MIT"
 name       = "vt"
 repository = "https://github.com/killbasa/vt"
-version    = "1.3.5"
+version    = "1.3.6"
 
 [profile.release]
 codegen-units = 1
