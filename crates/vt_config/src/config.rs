@@ -1,5 +1,4 @@
 use anyhow::{Context, Result};
-use confy;
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{HashMap, HashSet},
@@ -10,30 +9,15 @@ const APP_NAME: &str = "vt";
 const CONFIG_FILE: &str = "vt.config";
 const SECRETS_FILE: &str = "vt.secret";
 
-#[derive(Deserialize, Serialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug, Default)]
 pub struct Config {
     pub channels: Option<HashMap<String, String>>,
     pub lists: Option<HashMap<String, HashSet<String>>>,
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug)]
+#[derive(Deserialize, Serialize, Clone, Debug, Default)]
 pub struct Secrets {
     pub apikey: Option<String>,
-}
-
-impl Default for Config {
-    fn default() -> Self {
-        Self {
-            channels: None,
-            lists: None,
-        }
-    }
-}
-
-impl Default for Secrets {
-    fn default() -> Self {
-        Self { apikey: None }
-    }
 }
 
 pub fn path() -> Result<PathBuf> {

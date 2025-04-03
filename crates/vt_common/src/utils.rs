@@ -56,10 +56,7 @@ pub fn humanize_time(time: &str) -> (String, String) {
     let humanized = HumanTime::from(parsed);
 
     (
-        parsed
-            .with_timezone(&Local::now().timezone())
-            .format("%Y-%m-%d %H:%M")
-            .to_string(),
+        parsed.with_timezone(&Local::now().timezone()).format("%Y-%m-%d %H:%M").to_string(),
         humanized.to_string(),
     )
 }

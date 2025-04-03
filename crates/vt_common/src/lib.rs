@@ -1,5 +1,5 @@
 pub mod display;
-pub mod headers;
+mod headers;
 pub mod utils;
-pub mod xml;
+mod xml;
 pub mod youtube;

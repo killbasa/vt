@@ -1,4 +1,4 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use reqwest::{
     blocking::ClientBuilder,
     header::{ACCEPT, USER_AGENT},
@@ -6,7 +6,6 @@ use reqwest::{
 use serde::{Deserialize, Serialize};
 
 use super::{headers, xml};
-use crate::app;
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -51,10 +50,7 @@ pub struct Video {
 pub fn get_video_ids_xml(alias: &str) -> Result<Vec<String>> {
     let client = ClientBuilder::new()
         .build()? //
-        .get(format!(
-            "https://www.youtube.com/feeds/videos.xml?channel_id={}",
-            alias
-        ))
+        .get(format!("https://www.youtube.com/feeds/videos.xml?channel_id={}", alias))
         .header(USER_AGENT, headers::WEB_USER_AGENT);
 
     let response = client.send()?;
@@ -70,8 +66,8 @@ pub fn get_video_ids_xml(alias: &str) -> Result<Vec<String>> {
         if entry_node.has_tag_name("entry") {
             let video_id = xml::get_property(&entry_node, "videoId");
 
-            if video_id.is_some() {
-                video_ids.push(video_id.unwrap());
+            if let Some(video_id) = video_id {
+                video_ids.push(video_id);
             }
         }
     }
@@ -82,24 +78,15 @@ pub fn get_video_ids_xml(alias: &str) -> Result<Vec<String>> {
 /**
  * Fetches videos from the YouTube API
  */
-pub fn get_videos_api(video_ids: &Vec<String>) -> Result<Vec<Video>> {
-    let apikey = match app::secrets().clone().apikey {
-        Some(apikey) => apikey,
-        None => {
-            return Err(anyhow!(
-                "API key not found. Use `vt config apikey` to set an API key."
-            ));
-        }
-    };
-
+pub fn get_videos_api(apikey: &str, video_ids: &[String]) -> Result<Vec<Video>> {
     let mut videos = Vec::<Video>::new();
 
     for chunk in video_ids.chunks(50) {
         let url = format!(
-			"https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&key={}&id={}",
-			apikey,
-			chunk.join(",")
-		);
+            "https://www.googleapis.com/youtube/v3/videos?part=snippet,liveStreamingDetails&key={}&id={}",
+            apikey,
+            chunk.join(",")
+        );
 
         let client = ClientBuilder::new()
             .build()? //

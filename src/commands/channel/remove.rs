@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use anyhow::Result;
 use clap::Args;
 
@@ -32,10 +30,7 @@ impl Cli {
             }
         }
 
-        let mut lists = match config.lists {
-            Some(lists) => lists,
-            None => HashMap::new(),
-        };
+        let mut lists = config.lists.unwrap_or_default();
         for (_, list) in lists.iter_mut() {
             list.remove(&self.alias);
         }

@@ -101,3 +101,12 @@ vt lists get phase
 #  ├─       url: https://www.youtube.com/watch?v=QbOjOyn4a0M
 #  └─ scheduled: in 4 days
 ```
+
+## Contributing
+
+### Install tooling
+
+```sh
+cargo install cargo-binstall
+cargo binstall cargo-shear -y
+```

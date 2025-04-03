@@ -12,3 +12,11 @@ update:
 
 debug *args: build
 	./target/x86_64-unknown-linux-gnu/debug/vt {{args}}
+
+ci:
+	cargo check --workspace
+	cargo test --workspace
+	cargo fmt --all -- --check
+	cargo clippy --workspace --all-targets -- --deny warnings
+	cargo shear
+	@echo "✅ All checks passed"

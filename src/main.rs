@@ -1,10 +1,9 @@
 mod app;
 mod commands;
-mod config;
-mod internal;
 
 use anyhow::Result;
 use clap::{Parser, Subcommand};
+use vt_config::config;
 
 #[derive(Parser)]
 #[command(author, version)]
@@ -21,6 +20,7 @@ enum Commands {
     Config(commands::config::cli::Cli),
     Get(commands::get::Cli),
     Lists(commands::lists::cli::Cli),
+    UI(commands::ui::Cli),
 }
 
 fn main() -> Result<()> {
@@ -35,5 +35,6 @@ fn main() -> Result<()> {
         Commands::Config(cli) => cli.exec(),
         Commands::Get(cli) => cli.exec(),
         Commands::Lists(cli) => cli.exec(),
+        Commands::UI(cli) => cli.exec(),
     }
 }

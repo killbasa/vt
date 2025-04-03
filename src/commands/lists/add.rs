@@ -1,6 +1,5 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use clap::Args;
-use std::collections::HashMap;
 
 use crate::{app, config};
 
@@ -15,10 +14,7 @@ pub struct Cli {
 impl Cli {
     pub fn exec(&self) -> Result<()> {
         let mut config = app::config().clone();
-        let mut lists = match config.lists {
-            Some(lists) => lists,
-            None => HashMap::new(),
-        };
+        let mut lists = config.lists.unwrap_or_default();
 
         let mut list = match lists.get(&self.list) {
             Some(list) => list.clone(),

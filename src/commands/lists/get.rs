@@ -1,10 +1,8 @@
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use clap::Args;
+use vt_common::{display, utils, youtube};
 
-use crate::{
-    app,
-    internal::{display, utils, youtube},
-};
+use crate::app;
 
 /// Get a channel's live or upcoming streams
 #[derive(Args, Debug)]
@@ -41,7 +39,7 @@ impl Cli {
                 }
             };
 
-            let ids = youtube::get_video_ids_xml(&alias)
+            let ids = youtube::get_video_ids_xml(alias)
                 .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &alias, e))?;
 
             for id in ids {
@@ -49,7 +47,16 @@ impl Cli {
             }
         }
 
-        let mut videos = youtube::get_videos_api(&video_ids)
+        let apikey = match app::secrets().clone().apikey {
+            Some(apikey) => apikey,
+            None => {
+                return Err(anyhow!(
+                    "API key not found. Use `vt config apikey` to set an API key."
+                ));
+            }
+        };
+
+        let mut videos = youtube::get_videos_api(&apikey, &video_ids)
             .map_err(|e| anyhow!("failed to fetch videos: {}", e))?;
 
         if self.json {
