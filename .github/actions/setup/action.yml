@@ -5,9 +5,7 @@ description: "Setup Rust tools"
 runs:
   using: "composite"
   steps:
-    - run: rustup toolchain install 1.85.1 \
-        --profile minimal \
-        --component clippy
+    - run: rustup toolchain install --profile minimal --component clippy 1.85.1
       shell: bash
 
     # - name: Restore CI tools
