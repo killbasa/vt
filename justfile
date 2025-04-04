@@ -7,11 +7,8 @@ release:
 install: release
 	cargo install --locked --path .
 
-update:
-	cargo interactive-update
-
 debug *args: build
-	./target/x86_64-unknown-linux-gnu/debug/vt {{args}}
+	./target/debug/vt {{args}}
 
 ci:
 	cargo check --workspace

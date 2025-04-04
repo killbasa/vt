@@ -4,11 +4,13 @@ use vt_config::config;
 
 use crate::app;
 
-/// Remove a channel
+/// Rename a group
 #[derive(Args, Debug)]
 pub struct Cli {
     /// The alias for the channel
     alias: String,
+    /// The new alias for the channel
+    new_alias: String,
 }
 
 impl Cli {
@@ -17,7 +19,8 @@ impl Cli {
 
         match config.channels {
             Some(mut channels) => {
-                if channels.contains_key(&self.alias) {
+                if let Some(channel) = channels.get(&self.alias) {
+                    channels.insert(self.new_alias.clone(), channel.clone());
                     channels.remove(&self.alias);
                     config.channels = Some(channels);
                 } else {
@@ -31,15 +34,9 @@ impl Cli {
             }
         }
 
-        let mut groups = config.groups.unwrap_or_default();
-        for (_, group) in groups.iter_mut() {
-            group.remove(&self.alias);
-        }
-
-        config.groups = Some(groups);
         config::save_config(config)?;
 
-        println!("Channel removed: {}", &self.alias);
+        println!("Channel moved: {} -> {}", &self.alias, &self.new_alias);
 
         Ok(())
     }

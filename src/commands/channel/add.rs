@@ -1,14 +1,17 @@
 use anyhow::Result;
 use clap::Args;
 use std::collections::HashMap;
+use vt_config::config;
 
-use crate::{app, config};
+use crate::app;
 
 /// Set a channel
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
+    /// The alias for the channel
     alias: String,
+    /// The channel ID
     channel_id: String,
 }
 

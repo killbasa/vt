@@ -1,7 +1,8 @@
 use anyhow::Result;
 use clap::Args;
+use vt_config::config;
 
-use crate::{app, config};
+use crate::app;
 
 /// Set a YouTube API key
 #[derive(Args, Debug)]

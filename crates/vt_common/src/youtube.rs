@@ -5,7 +5,7 @@ use reqwest::{
 };
 use serde::{Deserialize, Serialize};
 
-use super::{headers, xml};
+use crate::{constants, http, xml};
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
@@ -51,7 +51,7 @@ pub fn get_video_ids_xml(alias: &str) -> Result<Vec<String>> {
     let client = ClientBuilder::new()
         .build()? //
         .get(format!("https://www.youtube.com/feeds/videos.xml?channel_id={}", alias))
-        .header(USER_AGENT, headers::WEB_USER_AGENT);
+        .header(USER_AGENT, http::WEB_USER_AGENT);
 
     let response = client.send()?;
     if response.status().as_u16() != 200 {
@@ -91,8 +91,8 @@ pub fn get_videos_api(apikey: &str, video_ids: &[String]) -> Result<Vec<Video>> 
         let client = ClientBuilder::new()
             .build()? //
             .get(url)
-            .header(USER_AGENT, headers::CLI_USER_AGENT)
-            .header(ACCEPT, headers::APPLICATION_JSON);
+            .header(USER_AGENT, constants::CLI_USER_AGENT)
+            .header(ACCEPT, http::APPLICATION_JSON);
 
         let response = client.send()?;
         if response.status().as_u16() != 200 {

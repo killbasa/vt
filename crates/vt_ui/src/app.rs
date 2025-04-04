@@ -13,6 +13,7 @@ pub fn run(mut terminal: DefaultTerminal) -> Result<()> {
             break;
         }
     }
+
     Ok(())
 }
 
@@ -27,5 +28,6 @@ fn should_quit() -> Result<bool> {
             return Ok(KeyCode::Char('q') == key.code);
         }
     }
+
     Ok(false)
 }

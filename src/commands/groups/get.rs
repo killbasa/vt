@@ -4,11 +4,13 @@ use vt_common::{display, utils, youtube};
 
 use crate::app;
 
-/// Get a channel's live or upcoming streams
+/// Get the live or upcoming streams of the channels in a group
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
-    list: String,
+    /// The group name
+    group: String,
+    /// Show the output in JSON format
     #[arg(long)]
     json: bool,
 }
@@ -22,16 +24,16 @@ impl Cli {
             }
         };
 
-        let list = match app::get_list(&self.list) {
+        let group = match app::get_group(&self.group) {
             Some(l) => l,
             None => {
-                return Err(anyhow!("list not found"));
+                return Err(anyhow!("group not found"));
             }
         };
 
         let mut video_ids = Vec::<String>::new();
 
-        for channel in list {
+        for channel in group {
             let alias = match channels.get(&channel) {
                 Some(c) => c,
                 None => {

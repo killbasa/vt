@@ -8,7 +8,9 @@ use crate::app;
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
+    /// The channel name
     channel: String,
+    /// Show the output in JSON format
     #[arg(long)]
     json: bool,
 }
@@ -21,7 +23,8 @@ impl Cli {
             Some(alias) => youtube::get_video_ids_xml(&alias)
                 .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &alias, e))?,
             None => {
-                return Err(anyhow!("channel not found"));
+                println!("Channel \"{}\" not found", &self.channel);
+                return Ok(());
             }
         };
 

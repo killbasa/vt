@@ -1,13 +1,15 @@
 use anyhow::Result;
 use clap::Args;
+use vt_config::config;
 
-use crate::{app, config};
+use crate::app;
 
-/// Change a channel
+/// Rename a channel
 #[derive(Args, Debug)]
-#[command(alias = "mv")]
 pub struct Cli {
+    /// The alias for the channel
     alias: String,
+    /// The new alias for the channel
     new_alias: String,
 }
 
