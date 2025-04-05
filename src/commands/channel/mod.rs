@@ -1,5 +1,5 @@
-mod add;
 pub mod cli;
+mod create;
+mod delete;
 mod list;
-mod remove;
 mod rename;

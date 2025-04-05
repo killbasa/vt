@@ -1,42 +1,42 @@
-use anyhow::Result;
+use anyhow::{Result, anyhow};
 use clap::Args;
 use vt_config::config;
-
-use crate::app;
 
 /// Rename a group
 #[derive(Args, Debug)]
 pub struct Cli {
-    /// The alias for the channel
-    alias: String,
-    /// The new alias for the channel
-    new_alias: String,
+    /// The name for the group
+    name: String,
+    /// The new name for the group
+    new_name: String,
 }
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let mut config = app::config().clone();
+        let mut config = config::get().clone();
 
-        match config.channels {
-            Some(mut channels) => {
-                if let Some(channel) = channels.get(&self.alias) {
-                    channels.insert(self.new_alias.clone(), channel.clone());
-                    channels.remove(&self.alias);
-                    config.channels = Some(channels);
-                } else {
-                    println!("Channel not found");
-                    return Ok(());
-                }
-            }
-            None => {
-                println!("There are no channels set");
-                return Ok(());
-            }
+        if config.groups.is_empty() {
+            return Err(anyhow!("there are no groups set"));
         }
 
-        config::save_config(config)?;
+        if config.channels.contains_key(&self.new_name) {
+            return Err(anyhow!("group with new name already exists"));
+        }
 
-        println!("Channel moved: {} -> {}", &self.alias, &self.new_alias);
+        if self.name == self.new_name {
+            return Err(anyhow!("existing name and new name are the same"));
+        }
+
+        if let Some(group) = config.groups.get(&self.name) {
+            config.groups.insert(self.new_name.clone(), group.clone());
+            config.groups.remove(&self.name);
+        } else {
+            return Err(anyhow!("group not found"));
+        }
+
+        config::save(config)?;
+
+        println!("group renamed: {} -> {}", &self.name, &self.new_name);
 
         Ok(())
     }

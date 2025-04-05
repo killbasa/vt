@@ -1,9 +1,7 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 use vt_config::config;
-
-use crate::app;
 
 /// Create a group
 #[derive(Args, Debug)]
@@ -15,24 +13,16 @@ pub struct Cli {
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let mut config = app::config().clone();
+        let mut config = config::get().clone();
 
-        if config.groups.is_none() {
-            config.groups = Some(HashMap::new());
+        if config.groups.contains_key(&self.group) {
+            return Err(anyhow!("group already exists"));
         }
 
-        if let Some(mut groups) = config.groups {
-            if groups.contains_key(&self.group) {
-                return Err(anyhow!("group already exists"));
-            }
+        config.groups.insert(self.group.clone(), HashSet::new());
+        config::save(config)?;
 
-            groups.insert(self.group.clone(), HashSet::new());
-            config.groups = Some(groups);
-        }
-
-        config::save_config(config)?;
-
-        println!("Group created: {}", &self.group);
+        println!("group created: {}", &self.group);
 
         Ok(())
     }

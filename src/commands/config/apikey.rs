@@ -1,8 +1,6 @@
 use anyhow::Result;
 use clap::Args;
-use vt_config::config;
-
-use crate::app;
+use vt_config::secrets;
 
 /// Set a YouTube API key
 #[derive(Args, Debug)]
@@ -11,12 +9,17 @@ pub struct Cli {}
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let mut secrets = app::secrets().clone();
+        let mut secrets = secrets::get().clone();
 
         let apikey = rpassword::prompt_password("Your YouTube API key: ")?;
 
+        if apikey.is_empty() {
+            println!("YouTube API key cannot be empty");
+            return Ok(());
+        }
+
         secrets.apikey = Some(apikey);
-        config::save_secrets(secrets)?;
+        secrets::save(secrets)?;
 
         println!("YouTube API key saved");
 

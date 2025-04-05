@@ -1,10 +1,7 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
+use std::io;
 use vt_config::config;
-
-use crate::app;
-
-// TODO - add confirmation prompt
 
 /// Delete a group
 #[derive(Args, Debug)]
@@ -16,25 +13,30 @@ pub struct Cli {
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let mut config = app::config().clone();
+        let mut config = config::get().clone();
 
-        match config.groups {
-            Some(mut groups) => {
-                if groups.contains_key(&self.group) {
-                    groups.remove(&self.group);
-                    config.groups = Some(groups);
-                } else {
-                    return Err(anyhow!("group not found"));
-                }
-            }
-            None => {
-                return Err(anyhow!("there are no groups to delete"));
-            }
+        if config.groups.is_empty() {
+            return Err(anyhow!("there are no groups to delete"));
         }
 
-        config::save_config(config)?;
+        if !config.groups.contains_key(&self.group) {
+            return Err(anyhow!("group not found"));
+        }
 
-        println!("Group deleted: {}", &self.group);
+        // Confirmation prompt
+        print!("are you sure you want to delete the group {}? (y/N) ", &self.group);
+        let mut input = String::new();
+        io::stdin().read_line(&mut input)?;
+        let input = input.trim();
+        if input != "y" {
+            println!("group deletion cancelled");
+            return Ok(());
+        }
+
+        config.groups.remove(&self.group);
+        config::save(config)?;
+
+        println!("group deleted: {}", &self.group);
 
         Ok(())
     }

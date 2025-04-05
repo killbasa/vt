@@ -9,7 +9,9 @@ license.workspace    = true
 repository.workspace = true
 
 [dependencies]
-anyhow    = { workspace = true }
-confy     = { workspace = true }
-serde     = { workspace = true, features = ["derive"] }
-vt_common = { workspace = true }
+anyhow       = { workspace = true }
+confy        = { workspace = true }
+const_format = { workspace = true }
+once_cell    = { workspace = true }
+serde        = { workspace = true, features = ["derive"] }
+vt_common    = { workspace = true }

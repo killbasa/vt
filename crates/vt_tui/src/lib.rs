@@ -1,11 +1,13 @@
+mod app;
+
 use anyhow::Result;
 
-use crate::app;
+use crate::app::App;
 
 pub fn init() -> Result<()> {
     let terminal = ratatui::init();
-    let app_result = app::run(terminal);
+    let result = App::new().run(terminal);
     ratatui::restore();
 
-    app_result
+    result
 }

@@ -1,8 +1,10 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
-use vt_common::{display, utils, youtube};
+use vt_common::{display, youtube};
 
 use crate::app;
+
+use super::internal::utils;
 
 /// Get a channel's live or upcoming streams
 #[derive(Args, Debug)]
@@ -13,32 +15,39 @@ pub struct Cli {
     /// Show the output in JSON format
     #[arg(long)]
     json: bool,
+    /// Show verbose output
+    #[clap(long = "verbose", short = 'v')]
+    verbose: bool,
 }
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let alias = app::get_channel(&self.channel);
+        if self.verbose {
+            println!("--- checking channel ---\n{}", self.channel.clone());
+        }
 
-        let video_ids = match alias {
-            Some(alias) => youtube::get_video_ids_xml(&alias)
-                .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &alias, e))?,
+        let channel = app::get_channel(&self.channel);
+
+        let video_ids = match channel {
+            Some(_channel) => youtube::videos::get_video_ids_xml(&_channel.id)
+                .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &_channel.id, e))?,
             None => {
-                println!("Channel \"{}\" not found", &self.channel);
+                println!("channel \"{}\" not found", &self.channel);
                 return Ok(());
             }
         };
 
-        let apikey = match app::secrets().clone().apikey {
-            Some(apikey) => apikey,
-            None => {
-                return Err(anyhow!(
-                    "API key not found. Use `vt config apikey` to set an API key."
-                ));
-            }
-        };
+        if self.verbose {
+            println!("--- checking videos ---\n{}", video_ids.clone().join("\n"));
+        }
 
-        let mut videos = youtube::get_videos_api(&apikey, &video_ids)
+        let apikey = vt_config::utils::get_apikey()?;
+        let mut videos = youtube::videos::get_videos_api(&apikey, &video_ids)
             .map_err(|e| anyhow!("failed to fetch videos: {}", e))?;
+
+        if self.verbose {
+            println!("--- video check result ---\n{} videos", videos.len());
+        }
 
         if self.json {
             if videos.is_empty() {
@@ -52,7 +61,7 @@ impl Cli {
             display::with_print(&json);
             return Ok(());
         } else if videos.is_empty() {
-            println!("No live or upcoming streams");
+            println!("no live or upcoming streams");
             return Ok(());
         }
 

@@ -1,23 +1,40 @@
 use anyhow::{Context, Result};
-use serde::{Deserialize, Serialize};
-use std::{
-    collections::{HashMap, HashSet},
-    path::PathBuf,
-};
-use vt_common::constants::APP_NAME;
+use once_cell::sync::OnceCell;
+use serde::Deserialize;
+use serde::Serialize;
+use std::collections::{HashMap, HashSet};
+use std::path::PathBuf;
+use vt_common::youtube::YoutubeChannel;
 
-const CONFIG_FILE: &str = "vt.config";
-const SECRETS_FILE: &str = "vt.secret";
+use crate::constants::{APP_NAME, CONFIG_FILE};
 
-#[derive(Deserialize, Serialize, Clone, Debug, Default)]
+static CONFIG: OnceCell<Config> = OnceCell::new();
+
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Config {
-    pub channels: Option<HashMap<String, String>>,
-    pub groups: Option<HashMap<String, HashSet<String>>>,
+    pub version: String,
+    pub channels: HashMap<String, YoutubeChannel>,
+    pub groups: HashMap<String, HashSet<String>>,
 }
 
-#[derive(Deserialize, Serialize, Clone, Debug, Default)]
-pub struct Secrets {
-    pub apikey: Option<String>,
+impl Default for Config {
+    fn default() -> Self {
+        Self {
+            version: "v2".to_string(), //
+            channels: HashMap::new(),
+            groups: HashMap::new(),
+        }
+    }
+}
+
+/// Set the global config
+pub fn init() -> Result<()> {
+    let config: Config = confy::load(APP_NAME, CONFIG_FILE) //
+        .with_context(|| "unable to load config")?;
+
+    CONFIG.set(config).expect("could not set config");
+
+    Ok(())
 }
 
 /// Get the config file path
@@ -26,22 +43,13 @@ pub fn path() -> Result<PathBuf> {
         .with_context(|| "unable to find the config file")
 }
 
-/// Load config from the config file
-pub fn load_config() -> Result<Config> {
-    confy::load(APP_NAME, CONFIG_FILE).with_context(|| "unable to load config")
+/// Get the config file
+pub fn get() -> &'static Config {
+    CONFIG.get().expect("config is not initialized")
 }
 
-/// Load secrets from the config file
-pub fn load_secrets() -> Result<Secrets> {
-    confy::load(APP_NAME, SECRETS_FILE).with_context(|| "unable to load secrets")
-}
-
-/// Save config to the config file
-pub fn save_config(config: Config) -> Result<()> {
-    confy::store(APP_NAME, CONFIG_FILE, config).with_context(|| "unable to save config")
-}
-
-/// Save secrets to the config file
-pub fn save_secrets(config: Secrets) -> Result<()> {
-    confy::store(APP_NAME, SECRETS_FILE, config).with_context(|| "unable to save secrets")
+/// Save the config file
+pub fn save(config: Config) -> Result<()> {
+    confy::store(APP_NAME, CONFIG_FILE, &config) //
+        .with_context(|| "unable to save config")
 }

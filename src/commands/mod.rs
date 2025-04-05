@@ -1,6 +1,8 @@
 pub mod channel;
+pub mod check;
 pub mod complete;
 pub mod config;
-pub mod get;
 pub mod groups;
-pub mod ui;
+mod internal;
+pub mod tui;
+pub mod video;

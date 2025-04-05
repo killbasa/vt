@@ -1,10 +1,7 @@
-use anyhow::Result;
+use anyhow::{Result, anyhow};
 use clap::Args;
 use std::collections::HashSet;
-
-use crate::app;
-
-// There has to be a better name for this
+use vt_config::config;
 
 /// List groups
 #[derive(Args, Debug)]
@@ -15,17 +12,14 @@ pub struct Cli {
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let config = app::config().clone();
+        let config = config::get().clone();
 
-        if config.groups.is_none() || config.groups.as_ref().unwrap().is_empty() {
-            println!("No groups set");
-            return Ok(());
+        if config.groups.is_empty() {
+            return Err(anyhow!("there are no groups to list"));
         }
 
-        let groups = config.groups.unwrap();
-
         if self.group.is_none() {
-            for (k, v) in groups.iter() {
+            for (k, v) in config.groups.iter() {
                 print_list(k, v)
             }
 
@@ -33,9 +27,11 @@ impl Cli {
         }
 
         let list_name = self.group.as_ref().unwrap();
-        match groups.get(list_name) {
+        match config.groups.get(list_name) {
             Some(group) => print_list(list_name, group),
-            None => println!("Group not found"),
+            None => {
+                return Err(anyhow!("group not found"));
+            }
         }
 
         Ok(())

@@ -1,10 +1,11 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
-use vt_common::{display, utils, youtube};
+use vt_common::{display, youtube};
+use vt_config::config;
 
-use crate::app;
+use crate::{app, commands::internal::utils};
 
-/// Get the live or upcoming streams of the channels in a group
+/// Check the live or upcoming streams of the channels in a group
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
@@ -13,16 +14,29 @@ pub struct Cli {
     /// Show the output in JSON format
     #[arg(long)]
     json: bool,
+    /// Show verbose output
+    #[clap(long = "verbose", short = 'v')]
+    verbose: bool,
 }
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let channels = match app::config().clone().channels {
-            Some(c) => c,
-            None => {
-                return Err(anyhow!("no channels found"));
-            }
-        };
+        if self.verbose {
+            println!("--- checking group ---\n{}", self.group.clone());
+        }
+
+        let channels = config::get().clone().channels;
+        if self.verbose {
+            println!(
+                "--- checking channels ---\n{}",
+                channels
+                    .clone()
+                    .into_iter()
+                    .map(|(k, v)| format!("{} ({})", k, v.id))
+                    .collect::<Vec<String>>()
+                    .join("\n")
+            );
+        }
 
         let group = match app::get_group(&self.group) {
             Some(l) => l,
@@ -33,33 +47,33 @@ impl Cli {
 
         let mut video_ids = Vec::<String>::new();
 
-        for channel in group {
-            let alias = match channels.get(&channel) {
+        for channel_name in group {
+            let channel = match channels.get(&channel_name) {
                 Some(c) => c,
                 None => {
                     return Err(anyhow!("channel not found"));
                 }
             };
 
-            let ids = youtube::get_video_ids_xml(alias)
-                .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &alias, e))?;
+            let ids = youtube::videos::get_video_ids_xml(&channel.id)
+                .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &channel_name, e))?;
 
             for id in ids {
                 video_ids.push(id);
             }
         }
 
-        let apikey = match app::secrets().clone().apikey {
-            Some(apikey) => apikey,
-            None => {
-                return Err(anyhow!(
-                    "API key not found. Use `vt config apikey` to set an API key."
-                ));
-            }
-        };
+        if self.verbose {
+            println!("--- checking videos ---\n{}", video_ids.clone().join("\n"));
+        }
 
-        let mut videos = youtube::get_videos_api(&apikey, &video_ids)
+        let apikey = vt_config::utils::get_apikey()?;
+        let mut videos = youtube::videos::get_videos_api(&apikey, &video_ids)
             .map_err(|e| anyhow!("failed to fetch videos: {}", e))?;
+
+        if self.verbose {
+            println!("--- video check result ---\n{} videos", videos.len());
+        }
 
         if self.json {
             if videos.is_empty() {

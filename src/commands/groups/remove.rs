@@ -2,31 +2,30 @@ use anyhow::{Result, anyhow};
 use clap::Args;
 use vt_config::config;
 
-use crate::app;
-
 /// Remove a channel from a group
 #[derive(Args, Debug)]
 pub struct Cli {
     /// The group to remove the channel from
     group: String,
-    /// The alias for the channel
-    alias: String,
+    /// The name for the channel
+    channel: String,
 }
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let mut config = app::config().clone();
-        let groups = config.groups.get_or_insert_with(Default::default);
+        let mut config = config::get().clone();
 
-        let group = groups
+        let group = config //
+            .groups
             .get_mut(&self.group)
-            .ok_or_else(|| anyhow!("group '{}' not found", &self.group))?;
+            .ok_or_else(|| anyhow!("group not found"))?;
 
-        if group.remove(&self.alias) {
-            config::save_config(config)?;
-            println!("Removed '{}' from '{}'", &self.alias, &self.group);
+        if group.remove(&self.channel) {
+            config::save(config)?;
+
+            println!("removed \"{}\" from \"{}\"", &self.channel, &self.group);
         } else {
-            println!("'{}' was not in group '{}'", &self.alias, &self.group);
+            return Err(anyhow!("\"{}\" was not in group \"{}\"", &self.channel, &self.group));
         }
 
         Ok(())

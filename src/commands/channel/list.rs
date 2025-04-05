@@ -1,7 +1,6 @@
-use anyhow::Result;
+use anyhow::{Result, anyhow};
 use clap::Args;
-
-use crate::app;
+use vt_config::config;
 
 /// List channels
 #[derive(Args, Debug)]
@@ -9,22 +8,15 @@ pub struct Cli {}
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let config = app::config().clone();
+        let config = config::get().clone();
 
-        if config.channels.is_none() || config.channels.as_ref().unwrap().is_empty() {
-            println!("No channels set");
-            return Ok(());
+        if config.channels.is_empty() {
+            return Err(anyhow!("there are no channels to list"));
         }
 
-        let mut list = Vec::<String>::new();
-
-        if let Some(channels) = config.channels {
-            for (k, v) in channels.iter() {
-                list.push(format!("{} -> {}", k, v));
-            }
+        for (k, v) in config.channels.iter() {
+            println!("{} -> {}", k, v.id);
         }
-
-        println!("{}", list.join("\n"));
 
         Ok(())
     }

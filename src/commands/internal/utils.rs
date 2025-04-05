@@ -1,10 +1,9 @@
 use chrono::{DateTime, Local};
 use chrono_humanize::HumanTime;
 use colored::{ColoredString, Colorize};
+use vt_common::youtube::YoutubeVideo;
 
-use super::youtube::Video;
-
-pub fn format_videos(videos: Vec<Video>, include_channel: bool) -> String {
+pub fn format_videos(videos: Vec<YoutubeVideo>, include_channel: bool) -> String {
     let mut video_list = Vec::<String>::new();
 
     for video in videos {

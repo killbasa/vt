@@ -10,38 +10,42 @@ use crate::app;
 pub struct Cli {
     /// The group to add the channel to
     group: String,
-    /// The alias for the channel
-    alias: String,
+    /// The name for the channel
+    channel: String,
 }
 
 impl Cli {
     pub fn exec(&self) -> Result<()> {
-        let mut config = app::config().clone();
-        let mut groups = config.groups.unwrap_or_default();
+        let mut config = config::get().clone();
 
-        let mut group = match groups.get(&self.group) {
+        let mut group = match config.groups.get(&self.group) {
             Some(group) => group.clone(),
             None => {
                 return Err(anyhow!("group not found"));
             }
         };
 
-        let alias = match app::get_channel(&self.alias) {
-            Some(_) => &self.alias,
+        let name = match app::get_channel(&self.channel) {
+            Some(_) => &self.channel,
             None => {
                 return Err(anyhow!("channel not found"));
             }
         };
 
-        match group.insert(alias.clone()) {
+        match group.insert(name.clone()) {
             true => {
-                groups.insert(self.group.clone(), group);
-                config.groups = Some(groups);
-                config::save_config(config)?;
+                config.groups.insert(self.group.clone(), group);
+                config::save(config)?;
 
-                println!("Added {} to {}", &self.alias, &self.group);
+                println!("added channel \"{}\" to group \"{}\"", &self.channel, &self.group);
             }
-            false => println!("Channel already exists in group"),
+            false => {
+                return Err(anyhow!(
+                    "channel \"{}\" is already in group \"{}\"",
+                    &self.channel,
+                    &self.group
+                ));
+            }
         };
 
         Ok(())
