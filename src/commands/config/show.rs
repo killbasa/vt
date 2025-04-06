@@ -1,9 +1,10 @@
-use anyhow::Result;
-use clap::Args;
 use std::{
     fs,
     io::{self, BufRead},
 };
+
+use anyhow::Result;
+use clap::Args;
 use vt_config::config;
 
 /// Show the current config

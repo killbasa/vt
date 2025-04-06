@@ -1,6 +1,6 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
-use std::io;
+use inquire::Confirm;
 use vt_config::config;
 
 /// Delete a group
@@ -23,13 +23,11 @@ impl Cli {
             return Err(anyhow!("group not found"));
         }
 
-        // Confirmation prompt
-        print!("are you sure you want to delete the group {}? (y/N) ", &self.group);
-        let mut input = String::new();
-        io::stdin().read_line(&mut input)?;
-        let input = input.trim();
-        if input != "y" {
-            println!("group deletion cancelled");
+        let confirmation =
+            Confirm::new(&format!("are you sure you want to delete \"{}\"?", &self.group))
+                .with_default(false)
+                .prompt()?;
+        if !confirmation {
             return Ok(());
         }
 

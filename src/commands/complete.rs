@@ -1,7 +1,8 @@
+use std::io;
+
 use anyhow::Result;
 use clap::{Args, CommandFactory};
 use clap_complete::{Shell, generate};
-use std::io;
 
 use crate::Cli as RootCli;
 

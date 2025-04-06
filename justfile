@@ -7,7 +7,7 @@ debug *args:
 release:
 	cargo build --locked --release
 
-install: release
+install:
 	cargo install --locked --path .
 
 ci: check test fmt clippy shear

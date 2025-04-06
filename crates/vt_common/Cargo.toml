@@ -9,8 +9,7 @@ license.workspace    = true
 repository.workspace = true
 
 [dependencies]
-anyhow       = { workspace = true }
-const_format = { workspace = true }
-reqwest      = { workspace = true, features = ["blocking", "json"] }
-roxmltree    = { workspace = true }
-serde        = { workspace = true, features = ["derive"] }
+anyhow    = { workspace = true }
+reqwest   = { workspace = true, features = ["blocking", "json"] }
+roxmltree = { workspace = true }
+serde     = { workspace = true, features = ["derive"] }

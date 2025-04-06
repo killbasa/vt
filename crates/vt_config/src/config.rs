@@ -1,9 +1,10 @@
+use std::collections::{HashMap, HashSet};
+use std::path::PathBuf;
+
 use anyhow::{Context, Result};
 use once_cell::sync::OnceCell;
 use serde::Deserialize;
 use serde::Serialize;
-use std::collections::{HashMap, HashSet};
-use std::path::PathBuf;
 use vt_common::youtube::YoutubeChannel;
 
 use crate::constants::{APP_NAME, CONFIG_FILE};

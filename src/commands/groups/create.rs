@@ -1,6 +1,7 @@
+use std::collections::HashSet;
+
 use anyhow::{Result, anyhow};
 use clap::Args;
-use std::collections::HashSet;
 use vt_config::config;
 
 /// Create a group

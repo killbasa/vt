@@ -1,6 +1,7 @@
+use std::collections::HashSet;
+
 use anyhow::{Result, anyhow};
 use clap::Args;
-use std::collections::HashSet;
 use vt_config::config;
 
 /// List groups
@@ -18,19 +19,16 @@ impl Cli {
             return Err(anyhow!("there are no groups to list"));
         }
 
-        if self.group.is_none() {
-            for (k, v) in config.groups.iter() {
-                print_list(k, v)
-            }
+        if let Some(group) = &self.group {
+            let channels = config.groups.get(group).ok_or_else(|| anyhow!("group not found"))?;
 
-            return Ok(());
-        }
+            print_group(group, channels);
+        } else {
+            let mut groups: Vec<_> = config.groups.iter().collect();
+            groups.sort_by_key(|(name, _)| *name);
 
-        let list_name = self.group.as_ref().unwrap();
-        match config.groups.get(list_name) {
-            Some(group) => print_list(list_name, group),
-            None => {
-                return Err(anyhow!("group not found"));
+            for (name, channels) in groups {
+                print_group(name, channels);
             }
         }
 
@@ -38,10 +36,13 @@ impl Cli {
     }
 }
 
-fn print_list(name: &String, group: &HashSet<String>) {
+fn print_group(name: &str, channels: &HashSet<String>) {
     println!("{}", name);
 
-    for k in group {
-        println!("  {}", k);
+    let mut channels: Vec<_> = channels.iter().collect();
+    channels.sort();
+
+    for channel in channels {
+        println!("  {}", channel);
     }
 }

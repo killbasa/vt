@@ -1,5 +1,4 @@
 use anyhow::{Result, anyhow};
-use const_format::formatcp;
 use reqwest::{
     blocking::ClientBuilder,
     header::{ACCEPT, USER_AGENT},
@@ -15,7 +14,7 @@ use super::{
 pub const WEB_USER_AGENT: &str =
     "Mozilla/5.0 (X11; Linux x86_64; rv:137.0) Gecko/20100101 Firefox/137.0";
 
-pub const CLI_USER_AGENT: &str = formatcp!("vt-client/{}", env!("CARGO_PKG_VERSION"));
+pub const CLI_USER_AGENT: &str = "vt-client";
 
 /**
  * Fetches video IDs from a channel's XML page
