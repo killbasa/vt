@@ -48,13 +48,13 @@ vt config set apikey
 
 ```sh
 # Add a channel for checking streams
-vt channel add iori UCN5bD1YYapThOeadG7YkBOA # or aliased: vt ch set iori UCN5bD1YYapThOeadG7YkBOA
+vt channel create iori UCN5bD1YYapThOeadG7YkBOA
 
-# Check all your set aliases
+# Check all your channels
 vt channel list
 
 # Get live and upcoming streams
-vt get iori
+vt check iori
 # [live] 【MINECRAFT】地下大冒険開始！無事生き延びれるのかっ！？going underground again:)【白鹿いおり Phase Connect】
 #  ├─     url: https://www.youtube.com/watch?v=Z0qmy9eZ5kE
 #  └─ started: 2 hours ago
@@ -75,12 +75,12 @@ vt get iori
 # Create a group
 vt groups create phase
 
-# Add a channels to the list
+# Add a channel to the group
 vt groups add iori
 vt groups add nasa
 
-# Check the channels in a list
-vt groups get phase
+# Check the channels in a group
+vt groups check phase
 # [upcoming] 【コラボ対談】貴方はどうして天体が好き？【phase connect】
 #  ├─   channel: Nasa Ch. 転寝ナサ 【Phase Connect】
 #  ├─       url: https://www.youtube.com/watch?v=-e1OUTo4JVA
