@@ -13,6 +13,7 @@ pub struct Cli {
 enum Commands {
     Create(super::create::Cli),
     Delete(super::delete::Cli),
+    Info(super::info::Cli),
     List(super::list::Cli),
     Rename(super::rename::Cli),
 }
@@ -22,6 +23,7 @@ impl Cli {
         match &self.command {
             Commands::Create(cli) => cli.run(),
             Commands::Delete(cli) => cli.run(),
+            Commands::Info(cli) => cli.run(),
             Commands::List(cli) => cli.run(),
             Commands::Rename(cli) => cli.run(),
         }

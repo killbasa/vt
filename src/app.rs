@@ -1,10 +1,9 @@
 use std::collections::HashSet;
 
-use vt_common::youtube::YoutubeChannel;
-use vt_config::config;
+use vt_config::{channel::VTChannel, config};
 
 /// Get a channel by name
-pub fn get_channel(channel_name: &str) -> Option<&YoutubeChannel> {
+pub fn get_channel(channel_name: &str) -> Option<&VTChannel> {
     config::get().channels.get(channel_name)
 }
 

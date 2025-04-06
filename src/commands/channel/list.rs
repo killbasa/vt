@@ -1,7 +1,6 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
-use vt_common::youtube::YoutubeChannel;
-use vt_config::config;
+use vt_config::{channel::VTChannel, config};
 
 /// List channels
 #[derive(Args, Debug)]
@@ -15,7 +14,7 @@ impl Cli {
             return Err(anyhow!("there are no channels to list"));
         }
 
-        let mut channels: Vec<&YoutubeChannel> = config.channels.values().collect();
+        let mut channels: Vec<&VTChannel> = config.channels.values().collect();
         channels.sort();
 
         for channel in channels {

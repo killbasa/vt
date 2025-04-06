@@ -5,8 +5,8 @@ use anyhow::{Context, Result};
 use once_cell::sync::OnceCell;
 use serde::Deserialize;
 use serde::Serialize;
-use vt_common::youtube::YoutubeChannel;
 
+use crate::channel::VTChannel;
 use crate::constants::{APP_NAME, CONFIG_FILE};
 
 static CONFIG: OnceCell<Config> = OnceCell::new();
@@ -14,7 +14,7 @@ static CONFIG: OnceCell<Config> = OnceCell::new();
 #[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Config {
     pub version: String,
-    pub channels: HashMap<String, YoutubeChannel>,
+    pub channels: HashMap<String, VTChannel>,
     pub groups: HashMap<String, HashSet<String>>,
 }
 

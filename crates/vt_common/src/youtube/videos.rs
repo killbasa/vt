@@ -7,14 +7,9 @@ use reqwest::{
 use crate::xml;
 
 use super::{
-    YoutubeVideo,
-    internal::{ApiResponse, RawYoutubeVideo},
+    CLI_USER_AGENT, WEB_USER_AGENT, YoutubeVideo,
+    internal::{RawYoutubeVideo, VideoApiResponse},
 };
-
-pub const WEB_USER_AGENT: &str =
-    "Mozilla/5.0 (X11; Linux x86_64; rv:137.0) Gecko/20100101 Firefox/137.0";
-
-pub const CLI_USER_AGENT: &str = "vt-client";
 
 /**
  * Fetches video IDs from a channel's XML page
@@ -67,7 +62,7 @@ pub fn get_video_api(apikey: &str, video_id: &String) -> Result<YoutubeVideo> {
         return Err(anyhow!(response.status()));
     }
 
-    let body: ApiResponse = response.json()?;
+    let body: VideoApiResponse = response.json()?;
 
     for raw_video in body.items {
         if let Some(video) = process_raw_video(raw_video) {
@@ -102,7 +97,7 @@ pub fn get_videos_api(apikey: &str, video_ids: &[String]) -> Result<Vec<YoutubeV
             return Err(anyhow!(response.status()));
         }
 
-        let body: ApiResponse = response.json()?;
+        let body: VideoApiResponse = response.json()?;
 
         for raw_video in body.items {
             if let Some(video) = process_raw_video(raw_video) {

@@ -1,15 +1,17 @@
 use serde::Deserialize;
 
+// ----- Videos -----
+
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct Snippet {
+pub struct VideoSnippet {
     pub title: String,
     pub channel_title: String,
 }
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct LiveStreamingDetails {
+pub struct VideoLiveStreamingDetails {
     pub actual_start_time: Option<String>,
     pub actual_end_time: Option<String>,
     pub scheduled_start_time: Option<String>,
@@ -19,11 +21,42 @@ pub struct LiveStreamingDetails {
 #[serde(rename_all = "camelCase")]
 pub struct RawYoutubeVideo {
     pub id: String,
-    pub snippet: Snippet,
-    pub live_streaming_details: Option<LiveStreamingDetails>,
+    pub snippet: VideoSnippet,
+    pub live_streaming_details: Option<VideoLiveStreamingDetails>,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct ApiResponse {
+pub struct VideoApiResponse {
     pub items: Vec<RawYoutubeVideo>,
+}
+
+// ----- Channels -----
+
+#[derive(Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct ChannelSnippet {
+    pub title: String,
+    pub description: String,
+    pub custom_url: Option<String>,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct ChannelStatistics {
+    pub view_count: String,
+    pub subscriber_count: String,
+    pub video_count: String,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct RawYoutubeChannel {
+    pub id: String,
+    pub snippet: ChannelSnippet,
+    pub statistics: ChannelStatistics,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct ChannelApiResponse {
+    pub items: Vec<RawYoutubeChannel>,
 }

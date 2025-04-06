@@ -1,7 +1,6 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
-use vt_common::youtube::YoutubeChannel;
-use vt_config::config::{self};
+use vt_config::{channel::VTChannel, config};
 
 /// Create a channel
 #[derive(Args, Debug)]
@@ -21,7 +20,7 @@ impl Cli {
             return Err(anyhow!("channel already exists"));
         }
 
-        let channel = YoutubeChannel {
+        let channel = VTChannel {
             name: self.name.clone(), //
             id: self.channel_id.clone(),
         };

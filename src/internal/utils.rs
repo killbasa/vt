@@ -1,7 +1,7 @@
 use chrono::{DateTime, Local};
 use chrono_humanize::HumanTime;
 use colored::{ColoredString, Colorize};
-use vt_common::youtube::YoutubeVideo;
+use vt_common::youtube::{YoutubeChannel, YoutubeVideo};
 
 const TIME_FORMAT: &str = "%Y-%m-%d %H:%M";
 
@@ -51,6 +51,23 @@ pub fn format_videos(videos: Vec<YoutubeVideo>, include_channel: bool) -> String
     }
 
     video_list.join("\n")
+}
+
+pub fn format_channel(channel: &YoutubeChannel) -> String {
+    let url = match &channel.custom_url {
+        Some(custom_url) => format!("https://www.youtube.com/{}", custom_url),
+        None => format!("https://www.youtube.com/channel/{}", channel.id),
+    };
+
+    format!(
+        "\n{}\n        url: {}\n         id: {}\nsubscribers: {}\n     videos: {}\n\ndescription:\n{}",
+        channel.name.bright_cyan(),
+        url.bright_green(),
+        channel.id.bright_green(),
+        channel.subscriber_count.bright_green(),
+        channel.video_count.bright_green(),
+        channel.description.bright_green(),
+    )
 }
 
 pub fn humanize_time(time: &str) -> (String, String) {
