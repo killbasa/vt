@@ -3,7 +3,7 @@ use clap::Args;
 use vt_common::{display, youtube};
 use vt_config::config;
 
-use crate::{app, commands::internal::utils};
+use crate::{app, internal::utils};
 
 /// Check the live or upcoming streams of the channels in a group
 #[derive(Args, Debug)]
@@ -20,12 +20,12 @@ pub struct Cli {
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         if self.verbose {
-            println!("--- checking group ---\n{}", self.group.clone());
+            println!("--- checking group ---\n{}", &self.group);
         }
 
-        let channels = config::get().clone().channels;
+        let channels = &config::get().channels;
         if self.verbose {
             println!(
                 "--- checking channels ---\n{}",
@@ -48,7 +48,7 @@ impl Cli {
         let mut video_ids = Vec::<String>::new();
 
         for channel_name in group {
-            let channel = match channels.get(&channel_name) {
+            let channel = match channels.get(channel_name) {
                 Some(c) => c,
                 None => {
                     return Err(anyhow!("channel not found"));

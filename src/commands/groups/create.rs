@@ -7,12 +7,12 @@ use vt_config::config;
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
-    /// The name of the group
+    /// The name of the group to create
     group: String,
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         let mut config = config::get().clone();
 
         if config.groups.contains_key(&self.group) {

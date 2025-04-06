@@ -1,6 +1,7 @@
 use anyhow::Result;
 use clap::{Args, Subcommand};
 
+/// Video utilities
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
@@ -14,9 +15,9 @@ enum Commands {
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         match &self.command {
-            Commands::Check(cli) => cli.exec(),
+            Commands::Check(cli) => cli.run(),
         }
     }
 }

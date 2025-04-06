@@ -6,13 +6,13 @@ use std::{
 };
 use vt_config::config;
 
-/// Show the config
+/// Show the current config
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {}
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         let path = config::path()?;
         let file = fs::File::open(&path)?;
 

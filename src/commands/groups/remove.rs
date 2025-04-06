@@ -7,12 +7,12 @@ use vt_config::config;
 pub struct Cli {
     /// The group to remove the channel from
     group: String,
-    /// The name for the channel
+    /// The name of the channel
     channel: String,
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         let mut config = config::get().clone();
 
         let group = config //

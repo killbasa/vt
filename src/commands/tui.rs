@@ -7,7 +7,7 @@ use clap::Args;
 pub struct Cli {}
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         vt_tui::init()?;
 
         Ok(())

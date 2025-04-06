@@ -7,15 +7,15 @@ use vt_config::config;
 pub struct Cli {}
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
-        let config = config::get().clone();
+    pub fn run(&self) -> Result<()> {
+        let config = config::get();
 
         if config.channels.is_empty() {
             return Err(anyhow!("there are no channels to list"));
         }
 
-        for (k, v) in config.channels.iter() {
-            println!("{} -> {}", k, v.id);
+        for (name, channel) in config.channels.iter() {
+            println!("{} -> {}", name, channel.id);
         }
 
         Ok(())

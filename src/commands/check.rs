@@ -2,11 +2,9 @@ use anyhow::{Result, anyhow};
 use clap::Args;
 use vt_common::{display, youtube};
 
-use crate::app;
+use crate::{app, internal::utils};
 
-use super::internal::utils;
-
-/// Get a channel's live or upcoming streams
+/// Check the live or upcoming streams of a channel
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
@@ -21,16 +19,16 @@ pub struct Cli {
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         if self.verbose {
-            println!("--- checking channel ---\n{}", self.channel.clone());
+            println!("--- checking channel ---\n{}", self.channel);
         }
 
         let channel = app::get_channel(&self.channel);
 
         let video_ids = match channel {
-            Some(_channel) => youtube::videos::get_video_ids_xml(&_channel.id)
-                .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &_channel.id, e))?,
+            Some(ch) => youtube::videos::get_video_ids_xml(&ch.id)
+                .map_err(|e| anyhow!("failed to fetch video IDs ({}): {}", &ch.id, e))?,
             None => {
                 println!("channel \"{}\" not found", &self.channel);
                 return Ok(());
@@ -38,7 +36,7 @@ impl Cli {
         };
 
         if self.verbose {
-            println!("--- checking videos ---\n{}", video_ids.clone().join("\n"));
+            println!("--- checking videos ---\n{}", video_ids.join("\n"));
         }
 
         let apikey = vt_config::utils::get_apikey()?;

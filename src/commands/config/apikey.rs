@@ -8,7 +8,7 @@ use vt_config::secrets;
 pub struct Cli {}
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         let mut secrets = secrets::get().clone();
 
         let apikey = rpassword::prompt_password("Your YouTube API key: ")?;

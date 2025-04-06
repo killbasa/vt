@@ -21,8 +21,8 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             version: "v2".to_string(), //
-            channels: HashMap::new(),
-            groups: HashMap::new(),
+            channels: HashMap::default(),
+            groups: HashMap::default(),
         }
     }
 }
@@ -52,4 +52,25 @@ pub fn get() -> &'static Config {
 pub fn save(config: Config) -> Result<()> {
     confy::store(APP_NAME, CONFIG_FILE, &config) //
         .with_context(|| "unable to save config")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_config_default() {
+        let config = Config::default();
+        assert_eq!(config.version, "v2");
+        assert!(config.channels.is_empty());
+        assert!(config.groups.is_empty());
+    }
+
+    #[test]
+    fn test_get_config_path() -> Result<()> {
+        let path = path()?;
+        assert!(path.to_str().unwrap().contains(APP_NAME));
+        assert!(path.to_str().unwrap().contains(CONFIG_FILE));
+        Ok(())
+    }
 }

@@ -11,8 +11,8 @@ pub struct Cli {
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
-        let config = config::get().clone();
+    pub fn run(&self) -> Result<()> {
+        let config = config::get();
 
         if config.groups.is_empty() {
             return Err(anyhow!("there are no groups to list"));

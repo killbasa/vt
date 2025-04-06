@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use clap::Args;
 use vt_common::youtube::YoutubeChannel;
-use vt_config::config;
+use vt_config::config::{self};
 
 /// Create a channel
 #[derive(Args, Debug)]
@@ -14,20 +14,19 @@ pub struct Cli {
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         let mut config = config::get().clone();
 
         if config.channels.contains_key(&self.name) {
             return Err(anyhow!("channel already exists"));
         }
 
-        config.channels.insert(
-            self.name.clone(),
-            YoutubeChannel {
-                name: self.name.clone(), //
-                id: self.channel_id.clone(),
-            },
-        );
+        let channel = YoutubeChannel {
+            name: self.name.clone(), //
+            id: self.channel_id.clone(),
+        };
+
+        config.channels.insert(self.name.clone(), channel);
 
         config::save(config)?;
 

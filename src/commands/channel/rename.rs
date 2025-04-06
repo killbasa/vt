@@ -12,7 +12,7 @@ pub struct Cli {
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         let mut config = config::get().clone();
 
         if config.channels.is_empty() {

@@ -1,5 +1,6 @@
 mod app;
 mod commands;
+mod internal;
 
 use anyhow::Result;
 use clap::{Parser, Subcommand};
@@ -31,12 +32,12 @@ fn main() -> Result<()> {
     secrets::init()?;
 
     match &cli.command {
-        Commands::Channel(cli) => cli.exec(),
-        Commands::Check(cli) => cli.exec(),
-        Commands::Complete(cli) => cli.exec(),
-        Commands::Config(cli) => cli.exec(),
-        Commands::Groups(cli) => cli.exec(),
-        Commands::Tui(cli) => cli.exec(),
-        Commands::Video(cli) => cli.exec(),
+        Commands::Channel(cli) => cli.run(),
+        Commands::Check(cli) => cli.run(),
+        Commands::Complete(cli) => cli.run(),
+        Commands::Config(cli) => cli.run(),
+        Commands::Groups(cli) => cli.run(),
+        Commands::Tui(cli) => cli.run(),
+        Commands::Video(cli) => cli.run(),
     }
 }

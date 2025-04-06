@@ -1,6 +1,7 @@
 use anyhow::Result;
 use clap::{Args, Subcommand};
 
+/// Manage groups
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
@@ -20,15 +21,15 @@ enum Commands {
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         match &self.command {
-            Commands::Add(cli) => cli.exec(),
-            Commands::Check(cli) => cli.exec(),
-            Commands::Create(cli) => cli.exec(),
-            Commands::Delete(cli) => cli.exec(),
-            Commands::List(cli) => cli.exec(),
-            Commands::Remove(cli) => cli.exec(),
-            Commands::Rename(cli) => cli.exec(),
+            Commands::Add(cli) => cli.run(),
+            Commands::Check(cli) => cli.run(),
+            Commands::Create(cli) => cli.run(),
+            Commands::Delete(cli) => cli.run(),
+            Commands::List(cli) => cli.run(),
+            Commands::Remove(cli) => cli.run(),
+            Commands::Rename(cli) => cli.run(),
         }
     }
 }

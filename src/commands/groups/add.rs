@@ -10,12 +10,12 @@ use crate::app;
 pub struct Cli {
     /// The group to add the channel to
     group: String,
-    /// The name for the channel
+    /// The name of the channel
     channel: String,
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         let mut config = config::get().clone();
 
         let mut group = match config.groups.get(&self.group) {

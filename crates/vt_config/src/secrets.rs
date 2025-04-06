@@ -4,12 +4,12 @@ use serde::{Deserialize, Serialize};
 
 use crate::constants::{APP_NAME, SECRETS_FILE};
 
+static SECRETS: OnceCell<Secrets> = OnceCell::new();
+
 #[derive(Deserialize, Serialize, Clone, Debug, Default)]
 pub struct Secrets {
     pub apikey: Option<String>,
 }
-
-static SECRETS: OnceCell<Secrets> = OnceCell::new();
 
 /// Set the global secrets
 pub fn init() -> Result<()> {
@@ -29,4 +29,15 @@ pub fn get() -> &'static Secrets {
 /// Save the secrets file
 pub fn save(config: Secrets) -> Result<()> {
     confy::store(APP_NAME, SECRETS_FILE, config).with_context(|| "unable to save secrets")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_secrets_default() {
+        let config = Secrets::default();
+        assert_eq!(config.apikey, None);
+    }
 }

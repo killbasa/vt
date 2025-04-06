@@ -8,7 +8,7 @@ use vt_config::config;
 pub struct Cli {}
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         println!("{}", config::path()?.display());
 
         Ok(())

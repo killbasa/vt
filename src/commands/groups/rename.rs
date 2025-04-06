@@ -5,14 +5,14 @@ use vt_config::config;
 /// Rename a group
 #[derive(Args, Debug)]
 pub struct Cli {
-    /// The name for the group
+    /// The name of the group
     name: String,
     /// The new name for the group
     new_name: String,
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         let mut config = config::get().clone();
 
         if config.groups.is_empty() {
