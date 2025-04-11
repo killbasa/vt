@@ -23,7 +23,6 @@ self_update     = { workspace = true }
 serde_json      = { workspace = true }
 vt-common       = { workspace = true }
 vt-config       = { workspace = true }
-vt-tui          = { workspace = true }
 
 [profile.release]
 codegen-units = 1
@@ -45,7 +44,6 @@ repository = "https://github.com/killbasa/vt"
 [workspace.dependencies]
 vt-common = { version = "0.1.0", path = "./crates/vt-common" }
 vt-config = { version = "0.1.0", path = "./crates/vt-config" }
-vt-tui    = { version = "0.1.0", path = "./crates/vt-tui" }
 
 anyhow          = "1.0.97"
 chrono          = "0.4.40"

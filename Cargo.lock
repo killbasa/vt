@@ -2378,7 +2378,6 @@ dependencies = [
  "serde_json",
  "vt-common",
  "vt-config",
- "vt-tui",
 ]
 
 [[package]]
