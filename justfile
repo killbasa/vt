@@ -1,11 +1,11 @@
-build:
-	cargo build --locked
-
 debug *args:
 	cargo run -- {{args}}
 
+build:
+	cargo build --locked -p vt -p vt-daemon -p vt-tui
+
 release:
-	cargo build --locked --release
+	cargo build --locked --release -p vt -p vt-daemon -p vt-tui
 
 install:
 	cargo install --locked --path .
@@ -30,15 +30,18 @@ shear:
 
 # TUI #
 
-build-tui:
-	cargo build --locked -p vt_tui
-
 debug-tui *args:
-	cargo run -p vt_tui -- {{args}}
+	cargo run -p vt-tui -- {{args}}
+
+build-tui:
+	cargo build --locked -p vt-tui
+
+release-tui:
+	cargo build --locked --release -p vt-tui
 
 ci-tui:
-	cargo check -p vt_tui
-	cargo test -p vt_tui
-	cargo fmt -p vt_tui -- --check
-	cargo clippy -p vt_tui --all-targets -- --deny warnings
+	cargo check -p vt-tui
+	cargo test -p vt-tui
+	cargo fmt -p vt-tui -- --check
+	cargo clippy -p vt-tui --all-targets -- --deny warnings
 	@echo "✅ All checks passed"

@@ -1,5 +1,5 @@
 [package]
-name    = "vt_config"
+name    = "vt-config"
 publish = false
 version = "0.1.0"
 

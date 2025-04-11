@@ -1,5 +1,5 @@
 [package]
-name    = "vt_common"
+name    = "vt-common"
 publish = false
 version = "0.1.0"
 

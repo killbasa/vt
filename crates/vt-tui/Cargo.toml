@@ -1,5 +1,5 @@
 [package]
-name    = "vt_tui"
+name    = "vt-tui"
 publish = false
 version = "0.1.0"
 
@@ -13,11 +13,11 @@ name = "vt_tui"
 path = "src/lib.rs"
 
 [[bin]]
-name = "vt_tui"
+name = "vt-tui"
 path = "src/entry.rs"
 
 [dependencies]
 anyhow    = { workspace = true }
 crossterm = { workspace = true }
 ratatui   = { workspace = true }
-vt_config = { workspace = true }
+vt-config = { workspace = true }

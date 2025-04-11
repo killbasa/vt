@@ -33,7 +33,8 @@ pub fn get_channelid_html(username: &String) -> Result<String> {
     Err(anyhow!("id not found"))
 }
 
-// TODO - allow handles, ids, and usernames
+// TODO - allow urls, handles, ids, and usernames
+// TODO - get social media links
 pub fn get_channel_api(apikey: &str, handle: &String) -> Result<YoutubeChannel> {
     let url = format!(
         "https://www.googleapis.com/youtube/v3/channels?part=id,snippet,statistics&key={}&forHandle={}",

@@ -109,6 +109,9 @@ pub fn get_videos_api(apikey: &str, video_ids: &[String]) -> Result<Vec<YoutubeV
     Ok(videos)
 }
 
+// https://www.youtube.com/playlist?list=UUMO9iiZCKQ9jnIM7zZ_mRX_cg
+// pub fn get_videos_member_html() {}
+
 fn process_raw_video(raw_video: RawYoutubeVideo) -> Option<YoutubeVideo> {
     if let Some(live) = raw_video.live_streaming_details {
         let end_time = live.actual_end_time;
