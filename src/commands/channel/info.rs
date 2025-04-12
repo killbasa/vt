@@ -16,7 +16,6 @@ impl Cli {
         let apikey = utils::get_apikey()?;
 
         let channel = channels::get_channel_api(&apikey, &self.handle)?;
-
         let content = format_channel(&channel);
         display::with_print(&content);
 

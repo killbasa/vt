@@ -58,5 +58,5 @@ pub struct RawYoutubeChannel {
 
 #[derive(Deserialize, Debug)]
 pub struct ChannelApiResponse {
-    pub items: Vec<RawYoutubeChannel>,
+    pub items: Option<Vec<RawYoutubeChannel>>,
 }

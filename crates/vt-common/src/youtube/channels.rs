@@ -54,11 +54,12 @@ pub fn get_channel_api(apikey: &str, handle: &String) -> Result<YoutubeChannel> 
 
     let body: ChannelApiResponse = response.json()?;
 
-    if body.items.is_empty() {
+    let items = body.items.unwrap_or_default();
+    if items.is_empty() {
         return Err(anyhow!("channel not found"));
     }
 
-    let raw_channel = body.items[0].to_owned();
+    let raw_channel = items[0].to_owned();
 
     let channel = YoutubeChannel {
         id: raw_channel.id,
