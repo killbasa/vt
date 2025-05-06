@@ -21,7 +21,6 @@ enum Commands {
     Complete(commands::complete::Cli),
     Config(commands::config::cli::Cli),
     Groups(commands::groups::cli::Cli),
-    Update(commands::update::Cli),
     Video(commands::video::cli::Cli),
 }
 
@@ -37,7 +36,6 @@ fn main() -> Result<()> {
         Commands::Complete(cli) => cli.run(),
         Commands::Config(cli) => cli.run(),
         Commands::Groups(cli) => cli.run(),
-        Commands::Update(cli) => cli.run(),
         Commands::Video(cli) => cli.run(),
     }
 }

@@ -2,10 +2,10 @@ debug *args:
 	cargo run -- {{args}}
 
 build:
-	cargo build --locked -p vt -p vt-daemon -p vt-tui
+	cargo build --locked -p vt -p vt-tui
 
 release:
-	cargo build --locked --release -p vt -p vt-daemon -p vt-tui
+	cargo build --locked --release -p vt -p vt-tui
 
 install:
 	cargo install --locked --path .

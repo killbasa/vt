@@ -20,6 +20,7 @@ pub struct YoutubeChannel {
     pub view_count: String,
     pub subscriber_count: String,
     pub video_count: String,
+    pub profile_picture: String,
 }
 
 impl Ord for YoutubeChannel {

@@ -34,10 +34,27 @@ pub struct VideoApiResponse {
 
 #[derive(Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
+pub struct ChannelThumbnail {
+    pub url: String,
+    // pub width: u32,
+    // pub height: u32,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
+pub struct ChannelThumbnails {
+    // pub default: ChannelThumbnail,
+    pub medium: ChannelThumbnail,
+    // pub high: ChannelThumbnail,
+}
+
+#[derive(Deserialize, Debug, Clone)]
+#[serde(rename_all = "camelCase")]
 pub struct ChannelSnippet {
     pub title: String,
     pub description: String,
     pub custom_url: Option<String>,
+    pub thumbnails: ChannelThumbnails,
 }
 
 #[derive(Deserialize, Debug, Clone)]

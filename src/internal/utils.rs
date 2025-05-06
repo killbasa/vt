@@ -60,7 +60,7 @@ pub fn format_channel(channel: &YoutubeChannel) -> String {
     };
 
     format!(
-        "\n{0: <9}{1}\n{2: <9}{3}\n{4: <9}{5}\n{6: <9}{7}\n{8: <9}{9}",
+        "\n{0: <9}{1}\n{2: <9}{3}\n{4: <9}{5}\n{6: <9}{7}\n{8: <9}{9}\n{10: <9}{11}",
         "channel:",
         channel.name.bright_cyan(),
         "url:",
@@ -71,6 +71,8 @@ pub fn format_channel(channel: &YoutubeChannel) -> String {
         channel.subscriber_count.bright_green(),
         "videos:",
         channel.video_count.bright_green(),
+        "pfp:",
+        channel.profile_picture.bright_green(),
     )
 }
 

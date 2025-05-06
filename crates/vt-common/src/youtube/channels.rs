@@ -69,7 +69,30 @@ pub fn get_channel_api(apikey: &str, handle: &String) -> Result<YoutubeChannel> 
         view_count: raw_channel.statistics.view_count,
         subscriber_count: raw_channel.statistics.subscriber_count,
         video_count: raw_channel.statistics.video_count,
+        profile_picture: raw_channel.snippet.thumbnails.medium.url,
     };
 
     Ok(channel)
+}
+
+pub fn get_channel_api_debug(apikey: &str, handle: &String) -> Result<String> {
+    let url = format!(
+        "https://www.googleapis.com/youtube/v3/channels?part=id,snippet,statistics&key={}&forHandle={}",
+        apikey, handle
+    );
+
+    let client = ClientBuilder::new()
+        .build()? //
+        .get(url)
+        .header(USER_AGENT, CLI_USER_AGENT)
+        .header(ACCEPT, "application/json");
+
+    let response = client.send()?;
+    if response.status().as_u16() != 200 {
+        return Err(anyhow!(response.status()));
+    }
+
+    let body = response.text()?;
+
+    Ok(body)
 }
