@@ -1,7 +1,8 @@
+use std::io;
+
 use anyhow::Result;
 use clap::{Args, CommandFactory};
-use clap_complete::{generate, Shell};
-use std::io;
+use clap_complete::{Shell, generate};
 
 use crate::Cli as RootCli;
 
@@ -15,7 +16,7 @@ pub struct Cli {
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         let mut cmd = RootCli::command();
         let bin_name = cmd.get_name().to_string();
 

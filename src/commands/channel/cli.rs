@@ -1,7 +1,7 @@
 use anyhow::Result;
 use clap::{Args, Subcommand};
 
-/// Manage the config file
+/// Manage channels
 #[derive(Args, Debug)]
 #[command()]
 pub struct Cli {
@@ -10,21 +10,22 @@ pub struct Cli {
 }
 
 #[derive(Subcommand, Debug)]
-#[command(alias = "ch")]
 enum Commands {
-    Add(super::add::Cli),
+    Create(super::create::Cli),
+    Delete(super::delete::Cli),
+    Info(super::info::Cli),
     List(super::list::Cli),
-    Move(super::_move::Cli),
-    Remove(super::remove::Cli),
+    Rename(super::rename::Cli),
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         match &self.command {
-            Commands::Add(cli) => cli.exec(),
-            Commands::List(cli) => cli.exec(),
-            Commands::Move(cli) => cli.exec(),
-            Commands::Remove(cli) => cli.exec(),
+            Commands::Create(cli) => cli.run(),
+            Commands::Delete(cli) => cli.run(),
+            Commands::Info(cli) => cli.run(),
+            Commands::List(cli) => cli.run(),
+            Commands::Rename(cli) => cli.run(),
         }
     }
 }

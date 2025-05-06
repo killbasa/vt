@@ -1,7 +1,6 @@
 use anyhow::Result;
 use clap::Args;
-
-use crate::config;
+use vt_config::config;
 
 /// Check the config path
 #[derive(Args, Debug)]
@@ -9,7 +8,7 @@ use crate::config;
 pub struct Cli {}
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         println!("{}", config::path()?.display());
 
         Ok(())

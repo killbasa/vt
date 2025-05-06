@@ -13,13 +13,15 @@ pub struct Cli {
 enum Commands {
     Apikey(super::apikey::Cli),
     Find(super::find::Cli),
+    Show(super::show::Cli),
 }
 
 impl Cli {
-    pub fn exec(&self) -> Result<()> {
+    pub fn run(&self) -> Result<()> {
         match &self.command {
-            Commands::Apikey(cli) => cli.exec(),
-            Commands::Find(cli) => cli.exec(),
+            Commands::Apikey(cli) => cli.run(),
+            Commands::Find(cli) => cli.run(),
+            Commands::Show(cli) => cli.run(),
         }
     }
 }

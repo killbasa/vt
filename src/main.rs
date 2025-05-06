@@ -1,10 +1,10 @@
 mod app;
 mod commands;
-mod config;
 mod internal;
 
 use anyhow::Result;
 use clap::{Parser, Subcommand};
+use vt_config::{config, secrets};
 
 #[derive(Parser)]
 #[command(author, version)]
@@ -17,23 +17,25 @@ pub struct Cli {
 #[derive(Subcommand)]
 enum Commands {
     Channel(commands::channel::cli::Cli),
+    Check(commands::check::Cli),
     Complete(commands::complete::Cli),
     Config(commands::config::cli::Cli),
-    Get(commands::get::Cli),
-    Lists(commands::lists::cli::Cli),
+    Groups(commands::groups::cli::Cli),
+    Video(commands::video::cli::Cli),
 }
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
 
-    app::set_global_config(config::load_config()?);
-    app::set_global_secrets(config::load_secrets()?);
+    config::init()?;
+    secrets::init()?;
 
     match &cli.command {
-        Commands::Channel(cli) => cli.exec(),
-        Commands::Complete(cli) => cli.exec(),
-        Commands::Config(cli) => cli.exec(),
-        Commands::Get(cli) => cli.exec(),
-        Commands::Lists(cli) => cli.exec(),
+        Commands::Channel(cli) => cli.run(),
+        Commands::Check(cli) => cli.run(),
+        Commands::Complete(cli) => cli.run(),
+        Commands::Config(cli) => cli.run(),
+        Commands::Groups(cli) => cli.run(),
+        Commands::Video(cli) => cli.run(),
     }
 }
